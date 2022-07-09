@@ -12,7 +12,6 @@ const App = () => {
   const searchMoviesByTitle = async (title) => {
     const response = await fetch(`${API_URL}&s=${title}`);
     const data = await response.json();
-    console.log(data);
 
     setMovies(data.Search);
   };
@@ -20,6 +19,11 @@ const App = () => {
   useEffect(() => {
     searchMoviesByTitle("Batman");
   }, []);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      searchMoviesByTitle(e.target.value);
+    }
+  };
 
   return (
     <div className="app">
@@ -29,11 +33,16 @@ const App = () => {
           placeholder="Search for movies"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
+
         <img
           src={SearchIcon}
           alt="search"
           onClick={() => searchMoviesByTitle(searchTerm)}
+          onKeyDown={(e) => {
+            handleKeyDown(e);
+          }}
         />
       </div>
 
